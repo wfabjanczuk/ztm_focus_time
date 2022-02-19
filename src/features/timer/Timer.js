@@ -1,21 +1,30 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import {ProgressBar} from 'react-native-paper';
 import {Countdown} from '../../components/Countdown';
 import {colors} from '../../constants/colors';
 import {fontSizes, spacingSizes} from '../../constants/sizes';
 import {RoundedButton} from '../../components/RoundedButton';
 
 export const Timer = ({focusSubject}) => {
-  const [isStarted, setIsStarted] = useState(false);
+  const [isStarted, setIsStarted] = useState(false),
+    [progress, setProgress] = useState(1);
 
   return (
     <View style={styles.container}>
       <View style={styles.countdown}>
-        <Countdown isPaused={!isStarted} />
+        <Countdown isPaused={!isStarted} setProgress={setProgress} />
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>Focusing on:</Text>
         <Text style={styles.task}>{focusSubject}</Text>
+      </View>
+      <View style={styles.progressBarWrapper}>
+        <ProgressBar
+          progress={progress}
+          color={colors.lightBlue}
+          style={styles.progressBar}
+        />
       </View>
       <View style={styles.buttonWrapper}>
         {isStarted ? (
@@ -66,5 +75,12 @@ const styles = StyleSheet.create({
     padding: spacingSizes.md,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  progressBarWrapper: {
+    paddingTop: spacingSizes.sm,
+    paddingBottom: spacingSizes.sm,
+  },
+  progressBar: {
+    height: 10,
   },
 });
