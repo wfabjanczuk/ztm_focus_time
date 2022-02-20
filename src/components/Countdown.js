@@ -24,16 +24,20 @@ export const Countdown = ({
       setMillis(time => {
         if (time === 0) {
           clearInterval(interval.current);
-          onEnd();
           return time;
         }
 
-        const timeLeft = time - 1000;
-        setProgress(timeLeft / minutesToMillis(minutes));
-
-        return timeLeft;
+        return time - 1000;
       });
     };
+
+  useEffect(() => {
+    setProgress(millis / minutesToMillis(minutes));
+
+    if (millis === 0) {
+      onEnd();
+    }
+  }, [millis]);
 
   useEffect(() => setMillis(minutesToMillis(minutes)), [minutes]);
 

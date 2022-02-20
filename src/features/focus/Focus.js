@@ -10,7 +10,7 @@ export const Focus = ({setSubject}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      <View style={styles.innerContainer}>
         <Text style={styles.title}>What would you like to focus on?</Text>
         <View style={styles.inputContainer}>
           <TextInput
@@ -30,9 +30,9 @@ export const Focus = ({setSubject}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.5,
   },
-  titleContainer: {
+  innerContainer: {
     flex: 0.5,
     padding: spacingSizes.md,
     justifyContent: 'center',

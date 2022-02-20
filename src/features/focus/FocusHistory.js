@@ -34,7 +34,7 @@ export const FocusHistory = ({focusHistory, onClear}) => (
 const styles = StyleSheet.create({
   historyItem: isCompleted => ({
     color: isCompleted ? 'lightgreen' : 'red',
-    fontSizes: fontSizes.md,
+    fontSize: fontSizes.md,
   }),
   title: {
     color: 'white',

@@ -14,6 +14,7 @@ const App = () => {
       setFocusHistory([
         ...focusHistory,
         {
+          key: String(focusHistory.length + 1),
           subject: focusSubject,
           isCompleted: isCompleted,
         },
@@ -65,10 +66,10 @@ const App = () => {
           }}
         />
       ) : (
-        <>
+        <View style={{flex: 1}}>
           <Focus setSubject={setFocusSubject} />
           <FocusHistory focusHistory={focusHistory} onClear={onClear} />
-        </>
+        </View>
       )}
     </View>
   );
