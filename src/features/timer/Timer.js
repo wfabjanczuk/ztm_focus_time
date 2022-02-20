@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, Vibration, View} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
 import {Countdown} from '../../components/Countdown';
 import {colors} from '../../constants/colors';
@@ -7,14 +7,29 @@ import {fontSizes, spacingSizes} from '../../constants/sizes';
 import {RoundedButton} from '../../components/RoundedButton';
 import {Timing} from './Timing';
 
+const DEFAULT_TIME = 1;
+const vibrate = () => {
+  if (Platform.OS === 'ios') {
+    Vibration.vibrate([1000, 2000, 3000]);
+  } else {
+    Vibration.vibrate([0, 400, 1000, 400, 1000, 400]);
+  }
+};
+
 export const Timer = ({focusSubject}) => {
-  const [minutes, setMinutes] = useState(1),
+  const [minutes, setMinutes] = useState(DEFAULT_TIME),
     [isStarted, setIsStarted] = useState(false),
     [progress, setProgress] = useState(1),
     changeTime = time => {
       setMinutes(time);
       setProgress(1);
       setIsStarted(false);
+    },
+    onEnd = () => {
+      setMinutes(DEFAULT_TIME);
+      setProgress(1);
+      setIsStarted(false);
+      vibrate();
     };
 
   return (
@@ -24,6 +39,7 @@ export const Timer = ({focusSubject}) => {
           minutes={minutes}
           isPaused={!isStarted}
           setProgress={setProgress}
+          onEnd={onEnd}
         />
       </View>
       <View style={styles.header}>

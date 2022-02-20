@@ -11,16 +11,20 @@ const formatTime = time => (time < 10 ? `0${time}` : time);
 export const Countdown = ({
   minutes = 1,
   isPaused = true,
-  setProgress = null,
+  setProgress = () => null,
+  onEnd = () => null,
 }) => {
   useKeepAwake();
 
   const interval = React.useRef(null),
     [millis, setMillis] = useState(null),
+    minutesLeft = Math.floor(millis / 60000),
+    secondsLeft = Math.floor((millis - minutesToMillis(minutesLeft)) / 1000),
     updateCountdown = () => {
       setMillis(time => {
         if (time === 0) {
-          // TODO: Ending action
+          clearInterval(interval.current);
+          onEnd();
           return time;
         }
 
@@ -29,9 +33,7 @@ export const Countdown = ({
 
         return timeLeft;
       });
-    },
-    minutesLeft = Math.floor(millis / 60000),
-    secondsLeft = Math.floor((millis - minutesToMillis(minutesLeft)) / 1000);
+    };
 
   useEffect(() => setMillis(minutesToMillis(minutes)), [minutes]);
 
