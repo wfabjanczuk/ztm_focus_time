@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {fontSizes, spacingSizes} from '../constants/sizes';
 import {colors} from '../constants/colors';
+import {useKeepAwake} from '@sayem314/react-native-keep-awake';
 
 const minutesToMillis = minutes => minutes * 60000;
 
@@ -12,8 +13,10 @@ export const Countdown = ({
   isPaused = true,
   setProgress = null,
 }) => {
+  useKeepAwake();
+
   const interval = React.useRef(null),
-    [millis, setMillis] = useState(minutesToMillis(minutes)),
+    [millis, setMillis] = useState(null),
     updateCountdown = () => {
       setMillis(time => {
         if (time === 0) {
@@ -29,6 +32,8 @@ export const Countdown = ({
     },
     minutesLeft = Math.floor(millis / 60000),
     secondsLeft = Math.floor((millis - minutesToMillis(minutesLeft)) / 1000);
+
+  useEffect(() => setMillis(minutesToMillis(minutes)), [minutes]);
 
   useEffect(() => {
     if (isPaused) {

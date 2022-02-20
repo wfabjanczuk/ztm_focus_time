@@ -1,19 +1,30 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
 import {Countdown} from '../../components/Countdown';
 import {colors} from '../../constants/colors';
 import {fontSizes, spacingSizes} from '../../constants/sizes';
 import {RoundedButton} from '../../components/RoundedButton';
+import {Timing} from './Timing';
 
 export const Timer = ({focusSubject}) => {
-  const [isStarted, setIsStarted] = useState(false),
-    [progress, setProgress] = useState(1);
+  const [minutes, setMinutes] = useState(1),
+    [isStarted, setIsStarted] = useState(false),
+    [progress, setProgress] = useState(1),
+    changeTime = time => {
+      setMinutes(time);
+      setProgress(1);
+      setIsStarted(false);
+    };
 
   return (
     <View style={styles.container}>
       <View style={styles.countdown}>
-        <Countdown isPaused={!isStarted} setProgress={setProgress} />
+        <Countdown
+          minutes={minutes}
+          isPaused={!isStarted}
+          setProgress={setProgress}
+        />
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>Focusing on:</Text>
@@ -25,6 +36,9 @@ export const Timer = ({focusSubject}) => {
           color={colors.lightBlue}
           style={styles.progressBar}
         />
+      </View>
+      <View style={styles.buttonWrapper}>
+        <Timing changeTime={changeTime} />
       </View>
       <View style={styles.buttonWrapper}>
         {isStarted ? (
@@ -66,12 +80,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   countdown: {
-    flex: 0.5,
+    flex: 0.45,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonWrapper: {
-    flex: 0.3,
+    flex: 0.25,
+    flexDirection: 'row',
     padding: spacingSizes.md,
     justifyContent: 'center',
     alignItems: 'center',
