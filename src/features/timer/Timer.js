@@ -16,7 +16,7 @@ const vibrate = () => {
   }
 };
 
-export const Timer = ({focusSubject}) => {
+export const Timer = ({focusSubject, onTimerEnd, clearSubject}) => {
   const [minutes, setMinutes] = useState(DEFAULT_TIME),
     [isStarted, setIsStarted] = useState(false),
     [progress, setProgress] = useState(1),
@@ -26,10 +26,11 @@ export const Timer = ({focusSubject}) => {
       setIsStarted(false);
     },
     onEnd = () => {
+      vibrate();
       setMinutes(DEFAULT_TIME);
       setProgress(1);
       setIsStarted(false);
-      vibrate();
+      onTimerEnd();
     };
 
   return (
@@ -73,6 +74,14 @@ export const Timer = ({focusSubject}) => {
           />
         )}
       </View>
+      <View style={styles.clearSubject}>
+        <RoundedButton
+          title="–"
+          size={50}
+          textStyle={{fontSize: fontSizes.lg}}
+          onPress={() => clearSubject()}
+        />
+      </View>
     </View>
   );
 };
@@ -106,6 +115,10 @@ const styles = StyleSheet.create({
     padding: spacingSizes.md,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  clearSubject: {
+    paddingTop: 25,
+    paddingLeft: 25,
   },
   progressBarWrapper: {
     paddingTop: spacingSizes.sm,
